@@ -1,5 +1,5 @@
 import React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function Main() {
 
@@ -9,6 +9,14 @@ export default function Main() {
         imageUrl: "http://i.imgflip.com/1bij.jpg"
     })
 
+    const [memeArray, setMemeArray] = useState([])
+
+    useEffect(() => {
+        fetch("https://api.imgflip.com/get_memes")
+        .then(res => res.json())
+        .then(data => setMemeArray(data.data.memes))
+    }, [])
+    
     function handleChange(event) {
         const {value, name} = event.currentTarget
         setMeme(prevMeme => ({
@@ -16,6 +24,23 @@ export default function Main() {
             [name]: value
         }))
     }
+
+    function getMemeImage() {
+        const randomNumber = Math.floor(Math.random() * memeArray.length)
+        const newMemeUrl = memeArray[randomNumber].url
+        setMeme((prevMeme) => ({
+            ...prevMeme,
+            imageUrl: newMemeUrl
+        }))
+    }
+
+    /**
+     * Challenge: Get a random image from the array of
+     * allMemes when the user clicks the button. Once
+     * you've gotten a random image from the array, make
+     * sure to write the code that will display that
+     * random meme image to the page.
+     */
 
     return (
         <>
@@ -37,7 +62,7 @@ export default function Main() {
                     onChange={handleChange}
                     value={meme.bottomText}/>
             </label>
-            <button>Make a meme</button>
+            <button onClick={getMemeImage}>Make a meme</button>
         </div>
         <div className="meme">
             <img src={meme.imageUrl} />
