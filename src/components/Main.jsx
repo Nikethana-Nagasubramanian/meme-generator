@@ -37,6 +37,7 @@ export default function Main() {
     return (
         <>
         <main>
+        <h3>Click 'Make a meme', find a meme you like, write the text!</h3>
         <div className = "form">
             <label>Top Text:
                 <input 
